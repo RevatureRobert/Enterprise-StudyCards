@@ -1,6 +1,6 @@
 package dev.enterprise.repo;
 
-import dev.enterprise.config.ConnectionUtil;
+import dev.enterprise.util.ApplicationUtil;
 import dev.enterprise.model.ReferenceLink;
 
 import java.sql.Connection;
@@ -9,26 +9,32 @@ import java.util.List;
 
 public class ReferenceLinkDao implements CrudRepository<ReferenceLink, Integer> {
     @Override
-    public void save(ReferenceLink referenceLink) {
-        try(Connection conn = ConnectionUtil.getInstance().getConnection()){
+    public int save(ReferenceLink referenceLink) {
+        int num = -1;
+        try(Connection conn = ApplicationUtil.INSTANCE.getConnection()){
 
         } catch(SQLException e){
             e.printStackTrace();
+        } finally {
+            return num;
         }
     }
 
     @Override
-    public void update(ReferenceLink referenceLink) {
-        try(Connection conn = ConnectionUtil.getInstance().getConnection()){
+    public int update(ReferenceLink referenceLink) {
+        int num = -1;
+        try(Connection conn = ApplicationUtil.INSTANCE.getConnection()){
 
         } catch(SQLException e){
             e.printStackTrace();
+        } finally {
+            return num;
         }
     }
 
     @Override
     public ReferenceLink findById(Integer integer) {
-        try(Connection conn = ConnectionUtil.getInstance().getConnection()){
+        try(Connection conn = ApplicationUtil.INSTANCE.getConnection()){
 
         } catch(SQLException e){
             e.printStackTrace();
@@ -38,7 +44,7 @@ public class ReferenceLinkDao implements CrudRepository<ReferenceLink, Integer> 
 
     @Override
     public List<ReferenceLink> findAll() {
-        try(Connection conn = ConnectionUtil.getInstance().getConnection()){
+        try(Connection conn = ApplicationUtil.INSTANCE.getConnection()){
 
         } catch(SQLException e){
             e.printStackTrace();

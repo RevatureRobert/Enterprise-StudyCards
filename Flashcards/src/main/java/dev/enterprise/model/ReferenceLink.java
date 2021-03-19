@@ -1,6 +1,7 @@
 package dev.enterprise.model;
 
 public class ReferenceLink {
+    // Primary Key
     private int id;
     private String address;
     private Topic topic;

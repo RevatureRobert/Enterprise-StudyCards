@@ -1,22 +1,19 @@
 package dev.enterprise.repo;
 
-import dev.enterprise.config.ConnectionUtil;
+import dev.enterprise.util.ApplicationUtil;
 import dev.enterprise.model.Participant;
 import dev.enterprise.model.QandA;
 import dev.enterprise.model.ReferenceLink;
 import dev.enterprise.model.Topic;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 public class QandADao implements CrudRepository<QandA, Integer> {
 
     @Override
-    public void save(QandA qandA) {
-        try (Connection conn = ConnectionUtil.getInstance().getConnection()) {
+    public int save(QandA qandA) {
+        try (Connection conn = ApplicationUtil.INSTANCE.getConnection()) {
             String sql = "insert into q_and_a (question, topic) values (?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, qandA.getQuestion());
@@ -25,15 +22,16 @@ public class QandADao implements CrudRepository<QandA, Integer> {
             ps.setInt(2, qandA.getTopic().ordinal() + 1);
 
             //We don't care right now what it returns, could refactor this later on if we want
-            ps.executeUpdate();
+             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         }
     }
 
     @Override
-    public void update(QandA qandA) {
-        try (Connection conn = ConnectionUtil.getInstance().getConnection()) {
+    public int update(QandA qandA) {
+        try (Connection conn = ApplicationUtil.INSTANCE.getConnection()) {
 
             // make it easier, clearer to get indexes of the string
             Map<String, Integer> indexes = new HashMap<>();
@@ -57,9 +55,10 @@ public class QandADao implements CrudRepository<QandA, Integer> {
             ps.setInt(indexes.get("id"), qandA.getId());
 
             //We don't care right now what it returns, could refactor this later on if we want
-            ps.executeUpdate();
+            return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         }
     }
 
@@ -67,35 +66,40 @@ public class QandADao implements CrudRepository<QandA, Integer> {
     public QandA findById(Integer integer) {
         QandA q = null;
 
-        try (Connection conn = ConnectionUtil.getInstance().getConnection()) {
+        try (Connection conn = ApplicationUtil.INSTANCE.getConnection()) {
+
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+            Savepoint sp = conn.setSavepoint("beginning");
 
             String sql = "select q.id as id, q.question as question, q.answer as answer, " +
-                    "a.reference_link as reference_link, r.responsible as responsible, " +
+                    "q.reference_link as reference_link, q.responsible as responsible, " +
                     "r.topic as topic_id, r.address as address, r.subtopic as subtopic, " +
-                    "p.name as participant_name, topic.topic as topic_name from q_and_a q " +
-                    "inner join reference_link r where " +
-                    "a.reference_link = r.id inner join participant p on a.responsible = p.id " +
-                    "inner join topic t on a.topic = t.id";
-
-            ResultSet rs = conn.prepareStatement(sql).executeQuery();
-            rs.next();
-            q = new QandA(
-                    rs.getInt("id"),
-                    rs.getString("question"),
-                    rs.getString("answer"),
-                    new ReferenceLink(
-                            rs.getInt("reference_link"),
-                            rs.getString("address"),
-                            Topic.valueOf(rs.getString("topic_name").replace(" ", "_").toUpperCase()),
-                            rs.getString("subtopic")
-                    ),
-                    new Participant(
-                            rs.getInt("responsible"),
-                            rs.getString("participant_name")
-                    ),
-                    Topic.valueOf(rs.getString("topic_name").replace(" ", "_").toUpperCase())
-            );
-
+                    "p.name as participant_name, t.topic as topic_name from q_and_a q " +
+                    "inner join reference_link r on " +
+                    "q.reference_link = r.id inner join participant p on q.responsible = p.id " +
+                    "inner join topic t on q.topic = t.id where q.id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, integer);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                q = new QandA(
+                        rs.getInt("id"),
+                        rs.getString("question"),
+                        rs.getString("answer"),
+                        new ReferenceLink(
+                                rs.getInt("reference_link"),
+                                rs.getString("address"),
+                                Topic.valueOf(rs.getString("topic_name").replace(" ", "_").toUpperCase()),
+                                rs.getString("subtopic")
+                        ),
+                        new Participant(
+                                rs.getInt("responsible"),
+                                rs.getString("participant_name")
+                        ),
+                        Topic.valueOf(rs.getString("topic_name").replace(" ", "_").toUpperCase())
+                );
+            }
+            conn.rollback(sp);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -108,7 +112,7 @@ public class QandADao implements CrudRepository<QandA, Integer> {
     public List<QandA> findAll() {
 
         List<QandA> questions = new LinkedList<>();
-        try (Connection conn = ConnectionUtil.getInstance().getConnection()) {
+        try (Connection conn = ApplicationUtil.INSTANCE.getConnection()) {
 
             String sql = "select q.id as id, q.question as question, q.answer as answer, " +
                     "a.reference_link as reference_link, r.responsible as responsible, " +

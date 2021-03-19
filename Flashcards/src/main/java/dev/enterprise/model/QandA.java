@@ -3,11 +3,14 @@ package dev.enterprise.model;
 import com.sun.javafx.image.impl.IntArgb;
 
 public class QandA {
+    // Primary Key
     private int id;
+    // Not Null
     private String question;
     private String answer;
     private ReferenceLink referenceLink;
     private Participant responsible;
+    // Not Null
     private Topic topic;
 
 

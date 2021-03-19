@@ -1,7 +1,9 @@
 package dev.enterprise.model;
 
 public class Participant {
+    // Primary Key
     private int id;
+    //
     private String name;
 
     public Participant(int id, String name) {
