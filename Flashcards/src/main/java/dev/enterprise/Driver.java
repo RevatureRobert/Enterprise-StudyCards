@@ -29,28 +29,8 @@ public class Driver {
         server.bind(new InetSocketAddress(9999), 2);
 //
         Socket s = server.accept();
-//
-//        BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-////        DataInputStream in = new DataInputStream(s.getInputStream());
-////        OutputStream out = s.getOutputStream();
-////        out.write(54);
-////        out.flush();
-//        String line = "";
-//        while((line = in.readLine()) != null){
-//            System.out.println(line);
-//        }
-////        server.accept();
-//
-//        System.out.println("connection attempt successful");
 
 
-//
-//        QuestionService qs = new QuestionService(new QandADao());
-//        Future<QandA> f = qs.getById(4);
-//
-//        Future<Integer> f2 = qs.save(new QandA());
-//
-//        ApplicationUtil.INSTANCE.getThreadActivatah().shutdownNow();
 
 
         RequestHandler req = new RequestHandler(s);
