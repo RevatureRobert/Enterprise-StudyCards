@@ -1,6 +1,5 @@
 package dev.enterprise.model;
 
-import com.sun.javafx.image.impl.IntArgb;
 
 public class QandA {
     // Primary Key
@@ -21,6 +20,10 @@ public class QandA {
         this.referenceLink = referenceLink;
         this.responsible = responsible;
         this.topic = topic;
+    }
+    public QandA(String question,Topic topic) {
+        this.question = question;
+        this.topic=topic;
     }
 
     public QandA() {

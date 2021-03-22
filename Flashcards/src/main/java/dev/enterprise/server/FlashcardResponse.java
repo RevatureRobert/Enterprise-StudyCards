@@ -6,12 +6,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+
 import java.security.InvalidParameterException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Optional;
+
 
 // implement HttpServletResponse
 
@@ -50,15 +52,7 @@ public class FlashcardResponse implements HttpServletResponse {
         this.body = body;
     }
 
-//    getHeader()
-//    getHeaderNames()
-//    getMethod()
-//    getPathInfo()
-//    getRequestURI()
-//    getContentLength()
-//    getContentType()
-//    getLocalPort()
-//    getServerPort()
+
 
     @Override
     public String getHeader(String s) {
@@ -72,6 +66,7 @@ public class FlashcardResponse implements HttpServletResponse {
 
     @Override
     public boolean containsHeader(String s) {
+
         return headers.containsKey(s);
     }
 
@@ -165,6 +160,7 @@ public class FlashcardResponse implements HttpServletResponse {
 
     @Override
     public int getBufferSize() {
+
         return 0;
     }
 
@@ -184,11 +180,13 @@ public class FlashcardResponse implements HttpServletResponse {
     }
 
     @Override
+
     public String encodeUrl(String s) {
         return null;
     }
 
     @Override
+
     public String encodeRedirectUrl(String s) {
         return null;
     }
