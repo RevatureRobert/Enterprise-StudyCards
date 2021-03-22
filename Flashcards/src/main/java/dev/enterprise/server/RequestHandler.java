@@ -4,6 +4,7 @@ import dev.enterprise.controller.BlandController;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.Socket;
 
@@ -48,7 +49,7 @@ public class RequestHandler {
 
         try {
             HttpServletRequest req = new FlashcardRequest(socket.getInputStream());
-            FlashcardResponse res = new FlashcardResponse(socket.getOutputStream());
+            HttpServletResponse res = new FlashcardResponse(socket.getOutputStream());
             HttpServlet servlet = ServletUtil.getServlet(req.getRequestURI());
             ServletUtil.invoke(servlet, req, res, HttpMethodNames.valueOf(req.getMethod()));
         } catch (IOException e) {

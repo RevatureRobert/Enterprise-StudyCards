@@ -57,22 +57,14 @@ public class FlashcardRequest implements HttpServletRequest {
     public String getBody() {
         return body;
     }
-
     @Override
-    public String getAuthType() {
-        return null;
+    public int getContentLength() {
+        return Integer.parseInt(headers.get("Content-Length"));
     }
-
-    @Override
-    public Cookie[] getCookies() {
-        return new Cookie[0];
-    }
-
     @Override
     public long getDateHeader(String s) {
         return 0;
     }
-
     @Override
     public String getHeader(String s) {
         return headers.get(s);
@@ -86,12 +78,6 @@ public class FlashcardRequest implements HttpServletRequest {
     public Enumeration<String> getHeaderNames() {
         return Collections.enumeration(headers.keySet());
     }
-
-    @Override
-    public int getIntHeader(String s) {
-        return 0;
-    }
-
     public String getMethod() {
         return method;
     }
@@ -100,6 +86,28 @@ public class FlashcardRequest implements HttpServletRequest {
     public String getPathInfo() {
         return uri;
     }
+
+
+    @Override
+    public String getAuthType() {
+        return null;
+    }
+
+    @Override
+    public Cookie[] getCookies() {
+        return new Cookie[0];
+    }
+
+
+
+
+
+    @Override
+    public int getIntHeader(String s) {
+        return 0;
+    }
+
+
 
     @Override
     public String getPathTranslated() {
@@ -236,10 +244,7 @@ public class FlashcardRequest implements HttpServletRequest {
 
     }
 
-    @Override
-    public int getContentLength() {
-        return Integer.parseInt(headers.get("Content-Length"));
-    }
+
 
     @Override
     public long getContentLengthLong() {
