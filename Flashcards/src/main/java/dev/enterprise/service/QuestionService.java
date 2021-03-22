@@ -2,7 +2,6 @@ package dev.enterprise.service;
 
 import dev.enterprise.model.QandA;
 import dev.enterprise.repo.CrudRepository;
-import dev.enterprise.repo.QandADao;
 import dev.enterprise.util.ApplicationUtil;
 
 import java.util.concurrent.Callable;

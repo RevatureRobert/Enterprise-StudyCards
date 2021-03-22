@@ -2,7 +2,6 @@ package dev.enterprise.server;
 
 import com.google.gson.Gson;
 
-import javax.servlet.HttpMethodConstraintElement;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +11,6 @@ import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.Properties;
 
 /**
  * A class to utilize reflection to find and execute the proper servlet.
@@ -30,6 +28,7 @@ public class ServletUtil {
         Gson json = new Gson();
         try {
             uriMapping = json.fromJson(new FileReader(new File("src/main/resources/servlet-config.json")), HashMap.class);
+            System.out.println(uriMapping);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
