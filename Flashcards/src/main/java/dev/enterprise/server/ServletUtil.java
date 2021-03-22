@@ -28,7 +28,6 @@ public class ServletUtil {
         Gson json = new Gson();
         try {
             uriMapping = json.fromJson(new FileReader(new File("src/main/resources/servlet-config.json")), HashMap.class);
-            System.out.println(uriMapping);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -47,7 +46,6 @@ public class ServletUtil {
             Class clazz = Class.forName(fQCN);
             if(clazz.getSuperclass().equals(HttpServlet.class)){
                 HttpServlet servlet = (HttpServlet) clazz.getConstructor().newInstance();
-                servlet.getClass().getDeclaredMethod("doGet").setAccessible(true);
                 return servlet;
             }
 
@@ -69,8 +67,9 @@ public class ServletUtil {
     static void invoke(HttpServlet servlet, HttpServletRequest req, HttpServletResponse res, HttpMethodNames name){
         try {
             Class clazz = servlet.getClass();
-            Method m = clazz.getDeclaredMethod(name.methodName);
+            Method m = clazz.getDeclaredMethod(name.methodName, HttpServletRequest.class, HttpServletResponse.class);
             m.setAccessible(true);
+
             m.invoke(servlet, req, res);
 
 

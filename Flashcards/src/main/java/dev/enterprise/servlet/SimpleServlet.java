@@ -27,7 +27,7 @@ public class SimpleServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!req.getContentType().equalsIgnoreCase("json"))
+        if (!req.getContentType().equalsIgnoreCase("application/json"))
             throw new IllegalArgumentException("request must be in JSON format");
 
         if (!(req instanceof FlashcardRequest))
