@@ -11,7 +11,7 @@ public class FlashcardServer {
 
     private int port;
     ServerSocket serverSocket;
-    private boolean running;
+    private boolean running = true;
     ApplicationUtil util;
 
     public FlashcardServer(int port) {
@@ -39,7 +39,7 @@ public class FlashcardServer {
         while (running) {
             Socket socket = serverSocket.accept();
             // use thread here
-
+            util.getThreadActivatah().execute(() -> new RequestHandler(socket).handle());
         }
     }
 }
