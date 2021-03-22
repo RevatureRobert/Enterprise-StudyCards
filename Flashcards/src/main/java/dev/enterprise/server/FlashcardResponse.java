@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Optional;
 
 // implement HttpServletResponse
 
@@ -22,6 +23,7 @@ public class FlashcardResponse implements HttpServletResponse {
     private PrintWriter outputWriter;
     private HashMap<String, String> headers;
     private String body = "";
+    private Locale locale;
 
 
     public FlashcardResponse(OutputStream o){
@@ -222,11 +224,16 @@ public class FlashcardResponse implements HttpServletResponse {
 
     @Override
     public void setLocale(Locale locale) {
-
+        if(!isCommitted()){
+            // TODO: set character encoding if setCharacterEncoding() or setContentType() haven't set them,
+            //  and getWriter() (which uses setCharacterEncoding()) hasn't been called yet
+            // if(!isCharacterEncodingSet)
+            this.locale = locale;
+        }
     }
 
     @Override
     public Locale getLocale() {
-        return null;
+        return Optional.ofNullable(locale).orElse(Locale.getDefault());
     }
 }
