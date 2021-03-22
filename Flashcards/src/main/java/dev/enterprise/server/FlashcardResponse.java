@@ -152,6 +152,8 @@ public class FlashcardResponse implements HttpServletResponse {
 
     @Override
     public void setContentType(String s) {
+        //TODO: separate out ContentType and Encoding in case of s == "text/html;charset=UTF-8"
+        // currently this only handles s == "text/html"
         headers.put("Content-Type",s);
     }
 
