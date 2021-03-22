@@ -86,6 +86,10 @@ public class FlashcardRequest implements HttpServletRequest {
     public String getPathInfo() {
         return uri;
     }
+    @Override
+    public StringBuffer getRequestURL() {
+        return new StringBuffer(headers.get("host")+uri);
+    }
 
 
     @Override
@@ -98,16 +102,10 @@ public class FlashcardRequest implements HttpServletRequest {
         return new Cookie[0];
     }
 
-
-
-
-
     @Override
     public int getIntHeader(String s) {
         return 0;
     }
-
-
 
     @Override
     public String getPathTranslated() {
@@ -149,10 +147,7 @@ public class FlashcardRequest implements HttpServletRequest {
         return uri;
     }
 
-    @Override
-    public StringBuffer getRequestURL() {
-        return new StringBuffer(headers.get("host")+uri);
-    }
+
 
     @Override
     public String getServletPath() {
