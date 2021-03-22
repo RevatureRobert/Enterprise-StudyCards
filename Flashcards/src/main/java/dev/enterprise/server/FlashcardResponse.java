@@ -6,9 +6,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+
+import java.security.InvalidParameterException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Optional;
+
 
 // implement HttpServletResponse
 
@@ -22,7 +27,9 @@ public class FlashcardResponse implements HttpServletResponse {
     private PrintWriter outputWriter;
     private HashMap<String, String> headers;
     private String body = "";
-
+    private Locale locale;
+    private int statusCode = 501;
+    private boolean committed = false;
 
     public FlashcardResponse(OutputStream o){
         outputWriter = new PrintWriter(o);
@@ -45,14 +52,121 @@ public class FlashcardResponse implements HttpServletResponse {
         this.body = body;
     }
 
-    @Override
-    public void addCookie(Cookie cookie) {
 
+
+    @Override
+    public String getHeader(String s) {
+        return headers.get(s);
+    }
+
+    @Override
+    public Collection<String> getHeaders(String s) {
+        return headers.keySet();
     }
 
     @Override
     public boolean containsHeader(String s) {
-        return false;
+
+        return headers.containsKey(s);
+    }
+
+    @Override
+    public Collection<String> getHeaderNames() {
+        return headers.keySet();
+    }
+
+    @Override
+    public void setHeader(String s, String s1) {
+        if(headers.containsKey(s)){
+            headers.put(s,s1);
+        }else{
+            throw new InvalidParameterException("Key not found");
+        }
+    }
+
+    @Override
+    public void addHeader(String s, String s1) {
+        headers.put(s,s1);
+    }
+
+    @Override
+    public PrintWriter getWriter() throws IOException {
+        return outputWriter;
+    }
+
+    @Override
+    public String getContentType() {
+        return headers.get("Content-Type");
+    }
+
+    @Override
+    public void setStatus(int i) {
+        statusCode = i;
+    }
+
+    @Override
+    @Deprecated
+    public void setStatus(int i, String s) {
+
+    }
+
+    @Override
+    public int getStatus() {
+        return statusCode;
+    }
+
+    @Override
+    public void setLocale(Locale locale) {
+        if(!isCommitted()){
+            // TODO: set character encoding if setCharacterEncoding() or setContentType() haven't set them,
+            //  and getWriter() (which uses setCharacterEncoding()) hasn't been called yet
+            // if(!isCharacterEncodingSet)
+            this.locale = locale;
+        }
+    }
+
+    @Override
+    public Locale getLocale() {
+        return Optional.ofNullable(locale).orElse(Locale.getDefault());
+    }
+
+    @Override
+    public boolean isCommitted() {
+        return !committed;
+    }
+
+    @Override
+    public void setContentLength(int i) {
+        headers.put("Content-Length", Integer.toString(i) );
+    }
+
+    @Override
+    public void setContentLengthLong(long l) {
+        headers.put("Content-Length",Long.toString(l));
+    }
+
+    @Override
+    public void setContentType(String s) {
+        //TODO: separate out ContentType and Encoding in case of s == "text/html;charset=UTF-8"
+        // currently this only handles s == "text/html"
+        headers.put("Content-Type",s);
+    }
+
+
+    @Override
+    public void setBufferSize(int i) {
+
+    }
+
+    @Override
+    public int getBufferSize() {
+
+        return 0;
+    }
+
+    @Override
+    public void addCookie(Cookie cookie) {
+
     }
 
     @Override
@@ -65,20 +179,14 @@ public class FlashcardResponse implements HttpServletResponse {
         return null;
     }
 
-    /**
-     * @param s
-     * @deprecated
-     */
     @Override
+
     public String encodeUrl(String s) {
         return null;
     }
 
-    /**
-     * @param s
-     * @deprecated
-     */
     @Override
+
     public String encodeRedirectUrl(String s) {
         return null;
     }
@@ -109,16 +217,6 @@ public class FlashcardResponse implements HttpServletResponse {
     }
 
     @Override
-    public void setHeader(String s, String s1) {
-
-    }
-
-    @Override
-    public void addHeader(String s, String s1) {
-
-    }
-
-    @Override
     public void setIntHeader(String s, int i) {
 
     }
@@ -129,47 +227,7 @@ public class FlashcardResponse implements HttpServletResponse {
     }
 
     @Override
-    public void setStatus(int i) {
-
-    }
-
-    /**
-     * @param i
-     * @param s
-     * @deprecated
-     */
-    @Override
-    public void setStatus(int i, String s) {
-
-    }
-
-    @Override
-    public int getStatus() {
-        return 0;
-    }
-
-    @Override
-    public String getHeader(String s) {
-        return null;
-    }
-
-    @Override
-    public Collection<String> getHeaders(String s) {
-        return null;
-    }
-
-    @Override
-    public Collection<String> getHeaderNames() {
-        return null;
-    }
-
-    @Override
     public String getCharacterEncoding() {
-        return null;
-    }
-
-    @Override
-    public String getContentType() {
         return null;
     }
 
@@ -179,38 +237,8 @@ public class FlashcardResponse implements HttpServletResponse {
     }
 
     @Override
-    public PrintWriter getWriter() throws IOException {
-        return null;
-    }
-
-    @Override
     public void setCharacterEncoding(String s) {
 
-    }
-
-    @Override
-    public void setContentLength(int i) {
-
-    }
-
-    @Override
-    public void setContentLengthLong(long l) {
-
-    }
-
-    @Override
-    public void setContentType(String s) {
-
-    }
-
-    @Override
-    public void setBufferSize(int i) {
-
-    }
-
-    @Override
-    public int getBufferSize() {
-        return 0;
     }
 
     @Override
@@ -224,22 +252,7 @@ public class FlashcardResponse implements HttpServletResponse {
     }
 
     @Override
-    public boolean isCommitted() {
-        return false;
-    }
-
-    @Override
     public void reset() {
 
-    }
-
-    @Override
-    public void setLocale(Locale locale) {
-
-    }
-
-    @Override
-    public Locale getLocale() {
-        return null;
     }
 }
