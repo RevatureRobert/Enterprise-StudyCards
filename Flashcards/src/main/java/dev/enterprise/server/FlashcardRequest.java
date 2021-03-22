@@ -1,5 +1,6 @@
 package dev.enterprise.server;
 
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
@@ -33,6 +34,7 @@ public class FlashcardRequest implements HttpServletRequest {
 
     private void parse() throws IOException {
 
+        System.out.println("in parse");
         String line = in.readLine();
         String[] firstLine = line.split(" ");
         method = firstLine[0];
@@ -44,12 +46,11 @@ public class FlashcardRequest implements HttpServletRequest {
             headers.put(header[0], header[1]);
         }
 
-
-        // logic for getting the body info
-        while (rawInput.available() != 0) {
-            line = in.readLine();
-            body += line;
+        StringBuilder sb = new StringBuilder();
+        while(in.ready()){
+            sb.append(in.readLine());
         }
+        body = sb.toString();
     }
 
     public String getBody() {

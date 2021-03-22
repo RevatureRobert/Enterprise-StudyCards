@@ -34,6 +34,8 @@ public class SimpleServlet extends HttpServlet {
             throw new IllegalArgumentException("request is not an instance of FlashcardResponse");
         FlashcardRequest request = (FlashcardRequest) req;
 
+        System.out.println(request.getBody());
+
         Gson gson = new Gson();
         HashMap<String, String> jsonBodyContent = gson.fromJson(request.getBody(), HashMap.class);
 
