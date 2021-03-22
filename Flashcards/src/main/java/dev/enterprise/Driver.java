@@ -18,70 +18,17 @@ import java.util.concurrent.Future;
 
 import java.net.Socket;
 
+/**
+ * The entry point for the application to start the server.
+ */
 public class Driver {
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         FlashcardServer server = new FlashcardServer(9999);
         server.start();
-        server.start();
+        server.stop();
 
-//        ServerSocket server = new ServerSocket();
-////
-////        System.out.println("waiting on a connection attempt");
-////
-//////        server.accept();  //  it is blocking the stack waiting for a connection
-//        server.bind(new InetSocketAddress(9999), 2);
-////
-//        Socket s = server.accept();
-////
-////        BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-//////        DataInputStream in = new DataInputStream(s.getInputStream());
-//////        OutputStream out = s.getOutputStream();
-//////        out.write(54);
-//////        out.flush();
-////        String line = "";
-////        while((line = in.readLine()) != null){
-////            System.out.println(line);
-////        }
-//////        server.accept();
-////
-////        System.out.println("connection attempt successful");
-//
-//
-////
-////        QuestionService qs = new QuestionService(new QandADao());
-////        Future<QandA> f = qs.getById(4);
-////
-////        Future<Integer> f2 = qs.save(new QandA());
-////
-////        ApplicationUtil.INSTANCE.getThreadActivatah().shutdownNow();
-//
-//
-//        RequestHandler req = new RequestHandler(s);
-//
-//        req.handle();
-
-    }
-}
-
-class Headers implements Enumeration<String> {
-
-    private String[] elements;
-    private int index;
-
-    public Headers(String... elements) {
-        this.elements = elements;
-    }
-
-    @Override
-    public boolean hasMoreElements() {
-        return this.index == elements.length-1;
-    }
-
-    @Override
-    public String nextElement() {
-        return elements[index++];
     }
 }

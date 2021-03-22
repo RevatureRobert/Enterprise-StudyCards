@@ -9,6 +9,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+/**
+ * The service class to work with the dao object and any other java
+ *      related logic.
+ */
 public class QuestionService {
 
     ApplicationUtil util = ApplicationUtil.INSTANCE;

@@ -1,80 +1,58 @@
 package dev.enterprise.server;
 
+import dev.enterprise.controller.BlandController;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * This class will take the socket from the FlashcardServer and run the needed logic.
+ *      This will construct a Request and Response, given the socket, and find the
+ *      Servlet associated with that uri and call the corresponding servlet method to the
+ *      request method.
+ */
 public class RequestHandler {
 
+    /**
+     * The socket to be stored with the Handler, this is essentially where we store
+     *      the session of the request. This RequestHandler object will have access
+     *      to and the context of the request and response lifecycle.
+     */
     private Socket socket;
 
     public RequestHandler(Socket socket){
         this.socket = socket;
     }
 
+    /**
+     * The method to actually perform the logic of the Handler. This will
+     *      construct the request object, construct the response object,
+     *      find the servlet, and call the servlets method with the information
+     *      from the socket.
+     */
     public void handle() {
 
+        // build the request with the sockets input stream
+        // create a response with the sockets output stream
+        // determine the correct controller to handle the logic and send the
+        //      request and response to it for handling
 
+        // TODO: implement the HttpServletResponse in the FlashcardResponse class
+        // TODO: extend the HttpServlet class in the SimpleServlet class
+        // TODO: register the servlet with the application
+        // TODO: fix the bugs
+        // TODO: connect the controller to the service layer to gather information
+        //      from the db and send it back to the client in json format.
 
-
-
-
-//        try {
-//            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-//            PrintWriter out = new PrintWriter(socket.getOutputStream());
-//            Map<String, String> headers = new HashMap<>();
-//            String method;
-//            String uri;
-//            String httpVersion;
-//            String body = "";
-//            String responseBody = "in the body now!!!";
-//
-//            String line = in.readLine();
-//            System.out.println(line);
-//            String[] firstLine = line.split(" ");
-//            method = firstLine[0];
-//            uri = firstLine[1];
-//            httpVersion = firstLine[2];
-//
-//            while (!(line = in.readLine()).equals("")) {
-//                System.out.println("still in the while");
-//                // logic for getting headers
-//                String[] header = line.split(": ");
-//                headers.put(header[0], header[1]);
-//            }
-//            System.out.println(headers.get("Content-Length"));
-//            int amount = 0;
-//            // logic for getting the body info
-//            while (socket.getInputStream().available() != 0) {
-//                line = in.readLine();
-//                if (line.equals("")) {
-//                    break;
-//                }
-//                System.out.println("still in the body while");
-//                body += line;
-//            }
-
-//            headers.remove("Content-Length");
-
-
-//            System.out.println(headers);
-//            System.out.println(body);
-//        in.close();
-//
-//            out.println(httpVersion + " 200 OK");
-//            out.println("Content-Length: "+ responseBody.length());
-//            for (String headerName : headers.keySet()) {
-//                out.println(headerName + ": " + headers.get(headerName));
-//            }
-//            out.println();
-//            out.println(responseBody);
-//            out.flush();
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
-
-
+        try {
+            HttpServletRequest req = new FlashcardRequest(socket.getInputStream());
+            FlashcardResponse res = new FlashcardResponse(socket.getOutputStream());
+            HttpServlet servlet = ServletUtil.getServlet(req.getRequestURI());
+            ServletUtil.invoke(servlet, req, res, HttpMethodNames.valueOf(req.getMethod()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

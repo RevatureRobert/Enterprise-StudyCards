@@ -6,6 +6,11 @@ import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * A singleton to hold the utility logic for the application. This
+ *      class controls the db configurations and the thread pool utilization
+ *      and creation.
+ */
 public enum ApplicationUtil {
     INSTANCE;
 

@@ -7,10 +7,25 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This will be the entry point of the application. It works
+ *      directly with the server socket to open a connection,
+ *      utilize the thread pool for concurrent requests, perform
+ *      request logic to send to the handler on another thread,
+ *      and have the ability to perform the shutdown logic.
+ */
 public class FlashcardServer {
 
+    /**
+     * The port the server should run on and be listening on
+     */
     private int port;
     ServerSocket serverSocket;
+
+    /**
+     * A boolean to determine whether the application should
+     *      be running.
+     */
     private boolean running = true;
     ApplicationUtil util;
 
@@ -27,6 +42,11 @@ public class FlashcardServer {
     }
 
 
+    /**
+     * Logic to shutdown the running application.
+     * @throws InterruptedException
+     * @throws IOException
+     */
     public void stop() throws InterruptedException, IOException {
         running = false;
         serverSocket.close();
@@ -35,6 +55,11 @@ public class FlashcardServer {
         util.getThreadActivatah().shutdownNow();
     }
 
+    /**
+     * Logic to start the application and send the request to the handler
+     *      on a different thread.
+     * @throws IOException
+     */
     public void start() throws IOException {
         while (running) {
             Socket socket = serverSocket.accept();
