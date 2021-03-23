@@ -5,7 +5,7 @@ import dev.enterprise.server.FlashcardResponse;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
-
+@Deprecated
 /**
  * An example of a controller. The application logic dealing with
  *      the read operations of the request and the mutation of the
