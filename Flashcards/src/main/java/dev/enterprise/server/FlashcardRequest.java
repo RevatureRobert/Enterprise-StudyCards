@@ -47,7 +47,7 @@ public class FlashcardRequest implements HttpServletRequest {
         }
 
         StringBuilder sb = new StringBuilder();
-        while(in.ready()){
+        while(rawInput.available() != 0){
             sb.append(in.readLine());
         }
         body = sb.toString();

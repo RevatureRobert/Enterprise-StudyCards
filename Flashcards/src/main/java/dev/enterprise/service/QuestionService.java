@@ -26,8 +26,9 @@ public class QuestionService {
         return util.getThreadActivatah().submit(call);
     }
 
-    public Future<Integer> save(QandA question){
-        return util.getThreadActivatah().submit(() -> questionDao.save(question));
+    public Integer save(QandA question){
+        System.out.println("in the save of service");
+        return questionDao.save(question);
 
     }
 

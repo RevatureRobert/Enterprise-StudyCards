@@ -32,6 +32,8 @@ public class FlashcardResponse implements HttpServletResponse {
     public FlashcardResponse(OutputStream o){
         outputWriter = new PrintWriter(o);
         headers = new HashMap<>();
+
+
     }
 
     public PrintWriter getOutputWriter() {

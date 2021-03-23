@@ -34,18 +34,39 @@ public class SimpleServlet extends HttpServlet {
             throw new IllegalArgumentException("request is not an instance of FlashcardResponse");
         FlashcardRequest request = (FlashcardRequest) req;
 
+        resp.addHeader("Content-Type","text/plain");
         System.out.println(request.getBody());
+
+        resp.getWriter().println("HTTP/1.1 200 OK");
+        for(String s : resp.getHeaderNames()){
+            resp.getWriter().println(s + ": " + resp.getHeader(s));
+        }
+        resp.getWriter().println();
+
+        if(request.getBody() == null){
+            resp.getWriter().println("The body was not in sufficient format");
+            resp.getWriter().flush();
+            return;
+        }
+
 
         Gson gson = new Gson();
         HashMap<String, String> jsonBodyContent = gson.fromJson(request.getBody(), HashMap.class);
+
+
 
         try {
             Topic topic = Topic.valueOf(jsonBodyContent.get("topic"));
             QandA question = new QandA(jsonBodyContent.get("id"), topic);
             QuestionService qs = new QuestionService(new QandADao());
             qs.save(question);
+            resp.getWriter().println("The post was successful");
+            resp.getWriter().flush();
+            return;
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            resp.getWriter().println("something went wrong");
+            resp.getWriter().flush();
         }
     }
 }
