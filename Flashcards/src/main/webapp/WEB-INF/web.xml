@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
         version="2.5">
 
-<!-- add into your tomcatDir/conf/server.xml
+<!-- add into your tomcatDir/conf/server.xml as a child of the GlobalNamingResources element
 
 <Resource name="jdbc/postgres" type="javax.sql.DataSource" global="jdbc/postgres" username="enterprise_associate" password="password"
               driverClassName="org.postgresql.Driver" url="jdbc:postgresql://postgresql-class.cks98gmxels6.us-west-1.rds.amazonaws.com:5432/enterprise?currentSchema=enterprise_study"
@@ -13,7 +13,7 @@
               maxActive="6"
               maxIdle="1">
 
-      and add this into your tomcatDir/conf/context.xml
+      and add this into your tomcatDir/conf/context.xml as a child of the context element
 
       	<ResourceLink name="jdbc/psql" global="jdbc/postgres" type="javax.sql.DataSource" />
 
