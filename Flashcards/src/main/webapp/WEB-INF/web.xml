@@ -9,9 +9,15 @@
     <welcome-file>welcome.html</welcome-file>
 </welcome-file-list>
 
+    <context-param>
+        <param-name>global</param-name>
+        <param-value>params</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>first</servlet-name>
         <servlet-class>dev.enterprise.servlet.FirstTomcatServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
     </servlet>
 
     <servlet-mapping>
@@ -23,5 +29,20 @@
         <servlet-name>first</servlet-name>
         <url-pattern>*.first</url-pattern>
     </servlet-mapping>
+
+<!--    <servlet>-->
+<!--        <servlet-name>ses</servlet-name>-->
+<!--        <servlet-class>dev.enterprise.servlet.SessionServlet</servlet-class>-->
+<!--    </servlet>-->
+
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>session</servlet-name>-->
+<!--        <url-pattern>/ses</url-pattern>-->
+<!--    </servlet-mapping>-->
+
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>ses</servlet-name>-->
+<!--        <url-pattern>/session</url-pattern>-->
+<!--    </servlet-mapping>-->
 
 </web-app>
