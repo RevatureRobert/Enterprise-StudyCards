@@ -68,8 +68,8 @@ public class QandADao implements CrudRepository<QandA, Integer> {
 
         try (Connection conn = ApplicationUtil.INSTANCE.getConnection()) {
 
-            conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            Savepoint sp = conn.setSavepoint("beginning");
+//            conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+//            Savepoint sp = conn.setSavepoint("beginning");
 
             String sql = "select q.id as id, q.question as question, q.answer as answer, " +
                     "q.reference_link as reference_link, q.responsible as responsible, " +
@@ -99,7 +99,7 @@ public class QandADao implements CrudRepository<QandA, Integer> {
                         Topic.valueOf(rs.getString("topic_name").replace(" ", "_").toUpperCase())
                 );
             }
-            conn.rollback(sp);
+//            conn.rollback(sp);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

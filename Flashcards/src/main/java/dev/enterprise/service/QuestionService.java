@@ -21,9 +21,8 @@ public class QuestionService {
         this.questionDao = questionDao;
     }
 
-    public Future<QandA> getById(int id) throws ExecutionException, InterruptedException {
-        Callable<QandA> call = () -> questionDao.findById(id);
-        return util.getThreadActivatah().submit(call);
+    public QandA getById(int id) {
+        return questionDao.findById(id);
     }
 
     public Integer save(QandA question){
