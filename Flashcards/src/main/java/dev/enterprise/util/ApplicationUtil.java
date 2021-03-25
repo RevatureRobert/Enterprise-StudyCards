@@ -22,13 +22,13 @@ public enum ApplicationUtil {
     public static final String USERNAME = "enterprise_associate";
     public static final String PASSWORD = "password";
 
-//    static {
-//        try {
-//            Class.forName("org.postgresql.Driver");
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     final int MAX_THREADS = 4;
     ExecutorService threadActivatah = Executors.newFixedThreadPool(MAX_THREADS);
@@ -41,18 +41,18 @@ public enum ApplicationUtil {
     //      to have tomcat manage our connections, we can utilize tomcats
     //      JNDI container with a configured DataSource
     public final Connection getConnection() throws SQLException {
-//        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        Context ctx = null;
-        try {
-            ctx = new InitialContext();
-
-            DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/psql");
-            return ds.getConnection();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-
-        throw new SQLException("The datasource could not be configured correctly");
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+//        Context ctx = null;
+//        try {
+//            ctx = new InitialContext();
+//
+//            DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/psql");
+//            return ds.getConnection();
+//        } catch (NamingException e) {
+//            e.printStackTrace();
+//        }
+//
+//        throw new SQLException("The datasource could not be configured correctly");
     }
 
 

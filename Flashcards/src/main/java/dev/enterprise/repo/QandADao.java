@@ -75,8 +75,8 @@ public class QandADao implements CrudRepository<QandA, Integer> {
                     "q.reference_link as reference_link, q.responsible as responsible, " +
                     "r.topic as topic_id, r.address as address, r.subtopic as subtopic, " +
                     "p.name as participant_name, t.topic as topic_name from q_and_a q " +
-                    "inner join reference_link r on " +
-                    "q.reference_link = r.id inner join participant p on q.responsible = p.id " +
+                    "left join reference_link r on " +
+                    "q.reference_link = r.id left join participant p on q.responsible = p.id " +
                     "inner join topic t on q.topic = t.id where q.id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, integer);

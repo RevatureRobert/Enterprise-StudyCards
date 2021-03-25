@@ -18,12 +18,12 @@
       	<ResourceLink name="jdbc/psql" global="jdbc/postgres" type="javax.sql.DataSource" />
 
  -->
-    <resource-ref>
-        <res-ref-name>jdbc/psql</res-ref-name>
-        <res-type>javax.sql.DataSource</res-type>
-        <mapped-name>jdbc/postgres</mapped-name>
+<!--    <resource-ref>-->
+<!--        <res-ref-name>jdbc/psql</res-ref-name>-->
+<!--        <res-type>javax.sql.DataSource</res-type>-->
+<!--        <mapped-name>jdbc/postgres</mapped-name>-->
 
-    </resource-ref>
+<!--    </resource-ref>-->
 
 <welcome-file-list>
     <welcome-file>welcome.html</welcome-file>
